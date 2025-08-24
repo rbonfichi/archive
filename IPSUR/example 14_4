@@ -1,0 +1,32 @@
+# Example 14.4 (Standard error of the median)
+
+# This example uses the "rivers" dataset which contains 141 values.
+# The distribution is markedly skewed to the right (see histograms).
+
+hist(rivers) # frequency histogram
+hist(rivers, prob = TRUE, ylim = c(0,0.002)) # density histogram
+lines(density(rivers), col="blue", lwd=2)
+
+resamps <- replicate(1000, sample(rivers, 141, TRUE),
+           simplify = FALSE)  # here we resample 1000 times the original 
+                              # sample "rivers" getting 1000 sample each
+                              # containing 141 values as "rivers" itself.
+                              # "resamps" is a "list" of 1000 numeric vectors.
+
+medstar <- sapply(resamps, 
+           median, simplify = TRUE) # here we calculate the medians of the 1000 samples
+                                    # and store it in the numeric vector "medstar"
+
+sd(medstar) # standard deviation of the vector containing the 1000 medians = standard error on the median 
+
+hist(medstar, breaks = 40, prob = TRUE) # histogram of medians
+lines(density(medstar), col="blue", lwd=2)
+
+median(rivers) # median of the original sample
+
+mean(medstar)  # mean of the medians resulting from the 1000 resampling
+
+mean(medstar) - median(rivers) # difference between the mean of medians 
+                               # distribution and the median calculated 
+                               # on the original sample
+

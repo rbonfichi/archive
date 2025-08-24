@@ -1,0 +1,23 @@
+#  CDF and corresponding Quantile Function plots for a Standard Normal Distribution page 145
+
+
+# Create a sequence of values
+x_vals <- seq(-4, 4, by=0.01)
+
+# Calculate the CDF for these values
+cdf_vals <- pnorm(x_vals)
+
+# Create a sequence of probability values
+p_vals <- seq(0.01, 0.99, by=0.01)
+
+# Calculate the corresponding quantiles
+quantile_vals <- qnorm(p_vals)
+
+# Set the graphical options to have 1 row and 2 columns of plots
+par(mfrow=c(1, 2))
+
+# Plot the CDF
+plot(x_vals, cdf_vals, type="l", col="blue", ylab="CDF", xlab="x", main="CDF of a Normal Distribution")
+
+# Plot the quantile function
+plot(p_vals, quantile_vals, type="l", col="red", ylab="Quantile", xlab="Probability", main="Quantile Function of a Normal Distribution")

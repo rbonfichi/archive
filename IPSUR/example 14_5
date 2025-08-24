@@ -1,0 +1,25 @@
+# Example 14.5 The boot package in R
+
+# In the "boot" package there is a "boot function whose syntax is
+# boot(data, statistic, R)
+# where:
+# "data" is a vector (or matrix) containing data to bee resampled
+# "statistic" is a function of two arguments that tells which statistic should
+# be computed and how many resamples should be taken.
+
+# using "boot" for the Standard Error of the Mean of Example 14.2:
+
+srs <- rnorm(25, mean = 3)
+hist(srs, xlim = c(0,6))
+mean(srs)
+
+mean_fun <- function(x, indices) mean(x[indices])
+
+library(boot)
+boot(data = srs, statistic = mean_fun, R = 1000)
+
+
+# using "boot" for the Standard Error of the Median of Example 14.4:
+
+median_fun <- function(x, indices) median(x[indices])
+boot(data = rivers, statistic = median_fun, R = 1000)

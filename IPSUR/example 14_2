@@ -1,0 +1,19 @@
+# Example 14.2 (Standard error of the mean)
+
+# In this example we illustrate the bootstrap by estimating the
+# standard error of the sample mean and we will do it in the special case that 
+# the underlying population is norm(mean = 3; sd = 1)
+
+srs <- rnorm(25, mean = 3) # take a random sample of size n = 25 from the population
+
+resamps <- replicate(1000, sample(srs, 25, TRUE),
+           simplify = FALSE) # resample the data 1000 times to get 1000 resamples
+                             # each of size 25
+
+xbarstar <- sapply(resamps, mean, simplify = TRUE) # calculate the sample mean of
+                                                   # each of the resamples
+
+hist(xbarstar, breaks = 40, prob = TRUE, xlim=c(2,3.6))
+curve(dnorm(x, 3, 0.2), add = TRUE) # overlay true normal density
+
+sd(xbarstar) # estimation of the standard error of Xbar.

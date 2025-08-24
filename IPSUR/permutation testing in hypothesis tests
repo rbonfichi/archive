@@ -1,0 +1,44 @@
+# PERMUTATION TESTING IN HYPOTHESIS TESTS
+
+# This case study presents a problem related to a study on differing dosages of 
+# a drug. Two groups were given different dosages: 300 mg (group X1) and 
+# 600 mg (group X2). The goal is to test the null hypothesis that there is no 
+#difference between these two groups.
+
+
+# Original data
+X1 <- c(284, 279, 289, 292, 287, 295, 285, 279, 306, 298)
+X2 <- c(298, 307, 297, 279, 291, 335, 299, 300, 306, 291)
+
+# Combine X1 and X2
+combined <- c(X1, X2)
+
+# Initialize a variable to store the differences in means
+diff_means <- numeric()
+
+# Number of iterations for resampling
+n_iter <- 10000
+
+for (i in 1:n_iter) {
+  # Resample
+  resampled <- sample(combined, size=length(X1))
+  
+  # Remaining scores
+  remaining <- setdiff(combined, resampled)
+  
+  # Calculate the difference in means and store it
+  diff_means[i] <- mean(resampled) - mean(remaining)
+}
+
+# Calculate observed difference on initial data
+obs_diff <- mean(X1) - mean(X2)
+obs_diff
+
+# Draw histogram
+hist(diff_means, main="Permutation Distribution", xlab="Difference in Means")
+abline(v = obs_diff, col = "red", lw =2)
+
+# Calculate p-value
+p_value <- sum(abs(diff_means) >= abs(obs_diff)) / n_iter
+print(paste("p-value:", p_value))
+

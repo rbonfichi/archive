@@ -1,0 +1,33 @@
+# ExampleS 14.7 and 14.8 - Percentile interval for the expected value of the median
+
+# these examples use the numeric vector "stack.loss" which contains 21 values
+# Obtained from 21 days of operation of a plant for the oxidation of ammonia 
+# to nitric acid.
+
+# SOLUTION BASED ON A NAIVE SCRIPT
+
+btsamps <- replicate(2000, sample(stack.loss, 21, TRUE),
+                     simplify = FALSE) # list of 2000 numerical vectors each
+                                       # resampling from original data "stack.loss"
+
+thetast <- sapply(btsamps, median, simplify = TRUE) # numeric vector containing 
+                                                    # the medians of the 2000 samples
+mean(thetast) # mean of the medians
+
+median(stack.loss) # median of the original sample (i.e., stack.loss)
+
+quantile(thetast, c(0.025, 0.975))
+
+# quantile visualization
+P <- ecdf(thetast)
+plot(P)
+abline(h = 0.025, col= "blue",lty = 5, lw = 2)
+abline(h = 0.975, col= "red", lty = 5, lw = 2)
+
+
+# SOLUTION BASED ON "BOOT" LIBRARY
+
+library(boot)
+med_fun <- function(x, ind) median(x[ind])
+med_boot <- boot(stack.loss, med_fun, R = 2000)
+boot.ci(med_boot, type = c("perc", "norm", "bca"))

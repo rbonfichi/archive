@@ -1,0 +1,58 @@
+# BASIC ELEMENTS OF DESCRIPTIVE STATISTICS
+
+# load libraries
+library(ggplot2)
+
+# read data
+df <-  read.csv2("C:/Users/Utente/Desktop/assay.csv")
+str(df)
+head(df)
+
+# visualization of two data distributions
+boxplot(df)
+hist(df$assay_1)
+
+ggplot(df, aes(assay_1)) + geom_histogram(binwidth = 0.8, colour="green") +
+  xlim(96, 104) + xlab("Assay(%)")
+
+ggplot(df, aes(assay_2)) + geom_histogram(binwidth = 0.8, colour="red") +
+  xlim(96, 104) + xlab("Assay(%)")
+
+# plot of both histograms
+p1 <- hist(df$assay_1)                     
+p2 <- hist(df$assay_2)                    
+plot( p1, col=rgb(0,0,1,1/4), xlim=c(94,104))         # first histogram
+plot( p2, col=rgb(1,0,0,1/4), xlim=c(94,104), add=T)  # second histogram
+
+
+# plot of both histograms side by side
+par(mfrow=c(1,2))
+hist(df$assay_1)
+hist(df$assay_2)
+
+# stem leaf plot
+library(aplpack)
+stem.leaf(df$assay_1)
+
+# quantiles
+quantile(df$assay_1, probs = c(0.25, 0.5, 0.75)) # restituisce i valori
+median(df$assay_1) # verifica per quantile 0.50
+
+# empirical cumulative distribution function (ecdf)
+ecdf(df$assay_1) # return the values
+plot(ecdf(df$assay_1)) # visualize ecdf
+
+par(mfrow=c(1,2))
+plot(ecdf(df$assay_1))
+hist(df$assay_1)
+
+
+# skewness and kkurtosis
+library(e1071)
+skewness(df$assay_1)
+kurtosis(df$assay_1)
+
+
+# outlier
+boxplot(df$assay_1)
+boxplot.stats(df$assay_1)$out
